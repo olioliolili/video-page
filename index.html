@@ -97,12 +97,12 @@
   }
 
    video {
+  display: block;
   width: 100%;
   height: auto;
-  display: block;
+  max-width: 100%;
   background: #000;
-  object-fit: contain;
-  }
+}
 
     .play-btn {
       position: absolute;
@@ -194,71 +194,104 @@
         <p class="video-desc">一直游到太阳落尽海</p>
       </div>
 
-      <div class="video-wrap" id="wrap1">
-        <video id="video1" preload="metadata" playsinline>
-          <source src="guanxia.MP4" type="video/mp4" />
-          你的浏览器不支持 video 标签。
-        </video>
-        <button class="play-btn" aria-label="播放视频" data-video="video1"></button>
-      </div>
+     <div class="video-wrap" id="wrap1">
+  <video id="video1" preload="auto" playsinline>
+    <source src="./guanxia.MP4" type="video/mp4" />
+    你的浏览器不支持 video 标签。
+  </video>
+
+  <button
+    class="play-btn"
+    aria-label="播放观夏"
+    data-video="video1">
+  </button>
+</div>
     </section>
 
     <!-- 第二支视频 -->
-    <section class="video-section">
-      <div class="video-meta">
-        <h2 class="video-title">即梦</h2>
-        <p class="video-desc">即刻造梦</p>
-      </div>
+   <div class="video-wrap" id="wrap2">
+  <video id="video2" preload="auto" playsinline>
+    <source src="./jimeng.MP4" type="video/mp4" />
+    你的浏览器不支持 video 标签。
+  </video>
 
-      <div class="video-wrap" id="wrap2">
-        <video id="video2" preload="metadata" playsinline>
-          <source src="jimeng.MP4" type="video/mp4" />
-          你的浏览器不支持 video 标签。
-        </video>
-        <button class="play-btn" aria-label="播放视频" data-video="video2"></button>
-      </div>
+  <button
+    class="play-btn"
+    aria-label="播放即梦"
+    data-video="video2">
+  </button>
+</div>
     </section>
 
     <p class="footer-note">© 2026 Personal Video Archive</p>
   </main>
 
-  <script>
-    const playButtons = document.querySelectorAll('.play-btn');
-    const videos = document.querySelectorAll('video');
+<script>
+  const buttons = document.querySelectorAll('.play-btn');
+  const videos = document.querySelectorAll('video');
 
-    playButtons.forEach(button => {
-      button.addEventListener('click', () => {
-        const videoId = button.getAttribute('data-video');
-        const video = document.getElementById(videoId);
-        const wrap = video.parentElement;
+  // 主动加载视频 metadata
+  videos.forEach(video => {
+    video.load();
 
-        // 暂停其他视频
-        videos.forEach(v => {
-          if (v !== video) {
-            v.pause();
-            v.parentElement.classList.remove('playing');
-          }
-        });
-
-        video.setAttribute('controls', 'controls');
-        video.play();
-        wrap.classList.add('playing');
-      });
+    video.addEventListener('loadedmetadata', () => {
+      console.log(
+        video.id,
+        video.videoWidth,
+        video.videoHeight,
+        video.duration
+      );
     });
 
-    videos.forEach(video => {
-      video.addEventListener('play', () => {
+    video.addEventListener('error', () => {
+      console.error(
+        '视频加载失败:',
+        video.id,
+        video.error
+      );
+    });
+  });
+
+  buttons.forEach(button => {
+    button.addEventListener('click', async () => {
+      const video =
+        document.getElementById(button.dataset.video);
+
+      // 暂停其他视频
+      videos.forEach(otherVideo => {
+        if (otherVideo !== video) {
+          otherVideo.pause();
+          otherVideo.parentElement.classList.remove('playing');
+        }
+      });
+
+      video.controls = true;
+
+      try {
+        await video.play();
         video.parentElement.classList.add('playing');
-      });
-
-      video.addEventListener('pause', () => {
-        video.parentElement.classList.remove('playing');
-      });
-
-      video.addEventListener('ended', () => {
-        video.parentElement.classList.remove('playing');
-      });
+      } catch (error) {
+        console.error('播放失败:', error);
+      }
     });
-  </script>
+  });
+
+  videos.forEach(video => {
+    video.addEventListener('play', () => {
+      video.parentElement.classList.add('playing');
+    });
+
+    video.addEventListener('pause', () => {
+      if (!video.ended) {
+        video.parentElement.classList.remove('playing');
+      }
+    });
+
+    video.addEventListener('ended', () => {
+      video.parentElement.classList.remove('playing');
+      video.controls = false;
+    });
+  });
+</script>
 </body>
 </html>
