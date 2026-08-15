@@ -90,17 +90,19 @@
     }
 
     .video-wrap {
-      position: relative;
-      width: 100%;
-      background: #ddd;
-      overflow: hidden;
-    }
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #000;
+  }
 
-    video {
-      width: 100%;
-      display: block;
-      background: #000;
-    }
+   video {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: #000;
+  object-fit: contain;
+  }
 
     .play-btn {
       position: absolute;
@@ -210,7 +212,7 @@
 
       <div class="video-wrap" id="wrap2">
         <video id="video2" preload="metadata" playsinline>
-          <source src="jimeng.mp4" type="video/mp4" />
+          <source src="jimeng.MP4" type="video/mp4" />
           你的浏览器不支持 video 标签。
         </video>
         <button class="play-btn" aria-label="播放视频" data-video="video2"></button>
