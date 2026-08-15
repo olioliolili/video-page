@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Videos</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 40px 20px;
+      background: #fff;
+      font-family: Arial, sans-serif;
+    }
+
+    .video-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    video {
+      width: 100%;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="video-container">
+
+    <video controls playsinline>
+      <source src="video1.mp4" type="video/mp4">
+    </video>
+
+    <video controls playsinline>
+      <source src="video2.mp4" type="video/mp4">
+    </video>
+
+  </div>
+
+</body>
+</html>
