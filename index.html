@@ -1,50 +1,262 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Videos</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Page</title>
   <style>
+    :root {
+      --bg: #f6f1e8;
+      --text: #1c1c1c;
+      --subtext: #6f6a63;
+      --line: rgba(0, 0, 0, 0.08);
+      --card: rgba(255, 255, 255, 0.35);
+    }
+
     * {
       box-sizing: border-box;
     }
 
     body {
       margin: 0;
-      padding: 40px 20px;
-      background: #fff;
-      font-family: Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Times New Roman", "Noto Serif SC", "Songti SC", serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
-    .video-container {
-      max-width: 1200px;
+    .page {
+      width: 100%;
+      max-width: 1100px;
       margin: 0 auto;
+      padding: 56px 24px 80px;
+    }
+
+    .page-header {
+      margin-bottom: 52px;
       display: flex;
-      flex-direction: column;
-      gap: 30px;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 20px;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 18px;
+    }
+
+    .page-title {
+      margin: 0;
+      font-size: clamp(32px, 5vw, 72px);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1;
+    }
+
+    .page-note {
+      margin: 0;
+      font-size: 12px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--subtext);
+      white-space: nowrap;
+    }
+
+    .video-section {
+      margin-bottom: 72px;
+    }
+
+    .video-meta {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 18px;
+    }
+
+    .video-title {
+      margin: 0;
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1.05;
+    }
+
+    .video-desc {
+      margin: 0;
+      font-size: clamp(15px, 1.6vw, 20px);
+      color: var(--subtext);
+      line-height: 1.6;
+      border-bottom: 1px solid var(--line);
+      padding-bottom: 10px;
+    }
+
+    .video-wrap {
+      position: relative;
+      width: 100%;
+      background: #ddd;
+      overflow: hidden;
     }
 
     video {
       width: 100%;
       display: block;
+      background: #000;
+    }
+
+    .play-btn {
+      position: absolute;
+      inset: 50% auto auto 50%;
+      transform: translate(-50%, -50%);
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.7);
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: 0.25s ease;
+      z-index: 3;
+    }
+
+    .play-btn:hover {
+      transform: translate(-50%, -50%) scale(1.05);
+      background: rgba(255,255,255,0.26);
+    }
+
+    .play-btn::before {
+      content: "";
+      display: block;
+      margin-left: 4px;
+      width: 0;
+      height: 0;
+      border-left: 18px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+    }
+
+    .video-wrap.playing .play-btn {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      color: var(--subtext);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        padding: 36px 18px 60px;
+      }
+
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .video-meta {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .play-btn {
+        width: 68px;
+        height: 68px;
+      }
+
+      .play-btn::before {
+        border-left: 16px solid white;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+      }
     }
   </style>
 </head>
-
 <body>
+  <main class="page">
+    <header class="page-header">
+      <h1 class="page-title">VIDEO WORKS</h1>
+      <p class="page-note">Editorial Presentation</p>
+    </header>
 
-  <div class="video-container">
+    <!-- 第一支视频 -->
+    <section class="video-section">
+      <div class="video-meta">
+        <h2 class="video-title">观夏</h2>
+        <p class="video-desc">一直游到太阳落尽海</p>
+      </div>
 
-    <video controls playsinline>
-      <source src="video1.mp4" type="video/mp4">
-    </video>
+      <div class="video-wrap" id="wrap1">
+        <video id="video1" preload="metadata" playsinline>
+          <source src="guansha.mp4" type="video/mp4" />
+          你的浏览器不支持 video 标签。
+        </video>
+        <button class="play-btn" aria-label="播放视频" data-video="video1"></button>
+      </div>
+    </section>
 
-    <video controls playsinline>
-      <source src="video2.mp4" type="video/mp4">
-    </video>
+    <!-- 第二支视频 -->
+    <section class="video-section">
+      <div class="video-meta">
+        <h2 class="video-title">即梦</h2>
+        <p class="video-desc">即刻造梦</p>
+      </div>
 
-  </div>
+      <div class="video-wrap" id="wrap2">
+        <video id="video2" preload="metadata" playsinline>
+          <source src="jimeng.mp4" type="video/mp4" />
+          你的浏览器不支持 video 标签。
+        </video>
+        <button class="play-btn" aria-label="播放视频" data-video="video2"></button>
+      </div>
+    </section>
 
+    <p class="footer-note">© 2026 Personal Video Archive</p>
+  </main>
+
+  <script>
+    const playButtons = document.querySelectorAll('.play-btn');
+    const videos = document.querySelectorAll('video');
+
+    playButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const videoId = button.getAttribute('data-video');
+        const video = document.getElementById(videoId);
+        const wrap = video.parentElement;
+
+        // 暂停其他视频
+        videos.forEach(v => {
+          if (v !== video) {
+            v.pause();
+            v.parentElement.classList.remove('playing');
+          }
+        });
+
+        video.setAttribute('controls', 'controls');
+        video.play();
+        wrap.classList.add('playing');
+      });
+    });
+
+    videos.forEach(video => {
+      video.addEventListener('play', () => {
+        video.parentElement.classList.add('playing');
+      });
+
+      video.addEventListener('pause', () => {
+        video.parentElement.classList.remove('playing');
+      });
+
+      video.addEventListener('ended', () => {
+        video.parentElement.classList.remove('playing');
+      });
+    });
+  </script>
 </body>
 </html>
